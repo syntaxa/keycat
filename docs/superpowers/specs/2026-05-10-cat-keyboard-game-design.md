@@ -4,6 +4,8 @@
 
 Create a colorful keyboard-learning game for children ages 6-8. The game helps children remember where letters are on a physical computer keyboard and gradually type faster, without requiring strict touch-typing finger technique.
 
+The game interface is in Russian.
+
 The game supports two selectable keyboard layouts:
 
 - Russian layout.
