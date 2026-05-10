@@ -4,7 +4,7 @@
 
 **Goal:** Build a playable browser MVP of the Russian-language cat keyboard game with layout selection, letter objects, staged hints, soft mistake feedback, rewards, stacked inventory, and local progress.
 
-**Architecture:** Use a Vite React TypeScript app. Keep learning logic in pure TypeScript modules with Vitest coverage, and keep React components thin: they render state, dispatch user actions, and play simple CSS animations. Store profile progress in localStorage through one persistence adapter.
+**Architecture:** Build browser-first with a Vite React TypeScript app. Keep learning logic in pure TypeScript modules with Vitest coverage, and keep React components thin: they render state, dispatch user actions, and play simple CSS animations. Store profile progress in localStorage through one persistence adapter, while keeping the app packageable as a later Windows desktop wrapper if the MVP validates the game loop.
 
 **Tech Stack:** Vite, React, TypeScript, Vitest, Testing Library, CSS modules or plain CSS, localStorage.
 
@@ -26,7 +26,7 @@ This plan builds the first playable vertical slice, not the full long-term game.
 - A small decor inventory with Minecraft-like stacked duplicates.
 - Local profile save/load.
 
-Later plans should add more rooms, more animals, egg opening animation polish, richer rarity tables, parent dashboard detail, and production art.
+Later plans should add more rooms, more animals, egg opening animation polish, richer rarity tables, parent dashboard detail, production art, and optional Windows packaging through a desktop wrapper such as Tauri or Electron.
 
 ## File Structure
 

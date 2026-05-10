@@ -212,7 +212,9 @@ After each short session, the game can show a reward screen with:
 
 ## System Structure
 
-The design should stay platform-flexible so it can later become a browser or desktop application.
+The game is browser-first. The first implementation should be a browser application because it is the fastest way to test the learning loop, cat reactions, hints, rewards, and room decoration with children.
+
+The architecture should still preserve a path to a Windows-native release later. If the browser MVP proves the game loop, the same browser build can be packaged as a Windows application with a desktop wrapper such as Tauri or Electron. Windows-native should not be the initial implementation target unless a later product requirement specifically needs installer distribution, kiosk-style fullscreen control, or deeper local OS integration.
 
 Core modules:
 
