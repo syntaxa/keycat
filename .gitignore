@@ -1,0 +1,8 @@
+.superpowers/
+env-backups/
+fix-machine-path-duplicate.ps1
+node_modules/
+dist/
+.env
+.env.local
+npm-debug.log*
