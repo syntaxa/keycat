@@ -10,6 +10,7 @@ The first candidate to try is **ToffeeCraft Pet Mobile Pixel Asset Pack**:
 
 - URL: https://toffeecraft.itch.io/pet-virtual-mobile-pixel-asset
 - Claimed contents: cozy room backgrounds, furniture, toys, food bowls, decorations, multiple cat types, dogs, bunnies, and pet animations.
+- Acquisition note from the itch.io page: `PetMobileFree.zip` is listed as a free download, while `PetMobileGameAsset.zip` is listed as available when paying `$1.80 USD` or more.
 - Fit: strong match for a pet-room game loop, even if the style is pixel art rather than the earlier Toca Boca-like target.
 
 The backup candidate is **ToffeeCraft Cat Room + Cat Pack Pochi**:
@@ -42,6 +43,8 @@ Before integrating any pack files:
 - Do not redistribute raw asset files outside the game repository/release.
 - Do not commit downloaded paid archives unless the repository is private and the license permits storing working copies.
 - If the selected pack requires purchase or account download, the user must obtain the archive or explicitly authorize the download/purchase path.
+
+The selected pack page states that the free pack is for personal use, can be used and edited freely, cannot be redistributed/resold, and can be used for game development and other productions. The page states that the paid pack is for commercial or personal use, can be used and edited freely, cannot be redistributed/resold, and can be used for game development and other productions.
 
 If the pack contents or license do not match the page claims, switch to the backup candidate rather than forcing a poor fit.
 
