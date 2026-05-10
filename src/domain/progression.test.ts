@@ -34,4 +34,29 @@ describe("progression", () => {
     expect(updated.layoutProgress.ru.unlockedLetters.length).toBeGreaterThan(initialLetters.length);
     expect(updated.layoutProgress.en.unlockedLetters).toEqual(profile.layoutProgress.en.unlockedLetters);
   });
+
+  it("records letter practice so the next session changes priority", () => {
+    const profile = createDefaultProfile("en");
+    const practiced = applySessionReward(profile, {
+      xp: 20,
+      eggProgress: 1,
+      decorItemId: "sunny-rug",
+      responses: [
+        { letter: "a", code: "KeyA", correct: true, responseMs: 800 },
+        { letter: "a", code: "KeyA", correct: true, responseMs: 700 },
+        { letter: "d", code: "KeyD", correct: false, responseMs: 1600 }
+      ]
+    });
+
+    expect(practiced.layoutProgress.en.letters.a).toMatchObject({
+      attempts: 2,
+      correct: 2,
+      totalResponseMs: 1500
+    });
+    expect(practiced.layoutProgress.en.letters.d).toMatchObject({
+      attempts: 1,
+      correct: 0,
+      totalResponseMs: 1600
+    });
+  });
 });

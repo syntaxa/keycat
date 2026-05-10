@@ -39,7 +39,8 @@ export function App() {
     const reward = {
       xp: Math.max(25, 60 - doneSession.mistakeCount * 4),
       decorItemId: pickDecorReward(),
-      eggProgress: 1
+      eggProgress: 1,
+      responses: doneSession.responses
     };
     const nextProfile = applySessionReward(profile, reward);
     setProfile(nextProfile);

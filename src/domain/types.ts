@@ -35,6 +35,13 @@ export interface LetterProgress {
   mastered: boolean;
 }
 
+export interface LetterResponse {
+  letter: string;
+  code: string;
+  correct: boolean;
+  responseMs: number;
+}
+
 export interface LayoutProgress {
   unlockedLetters: string[];
   letters: Record<string, LetterProgress>;

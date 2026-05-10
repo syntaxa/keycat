@@ -1,6 +1,6 @@
 import { nextHintAfterDelay, nextHintAfterMistake, softenHintAfterSuccess } from "./hints";
 import { chooseNextKey, getDelayMs } from "./tutor";
-import type { CatMood, HintStage, KeyboardLayout, KeyDefinition, Profile, SessionState } from "./types";
+import type { CatMood, HintStage, KeyboardLayout, KeyDefinition, LetterResponse, Profile, SessionState } from "./types";
 
 export interface GameSession {
   [key: string]: unknown;
@@ -15,7 +15,7 @@ export interface GameSession {
   mistakeCount: number;
   delayMs: number;
   lastEvent?: "success" | "mistake" | null;
-  responses: Array<{ letter: string; code: string; correct: boolean; responseMs: number }>;
+  responses: LetterResponse[];
 }
 
 export function createSession(target: string): SessionState;

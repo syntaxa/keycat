@@ -1,6 +1,6 @@
 import { addItem } from "./inventory";
 import { keyboardLayouts } from "./keyboardLayouts";
-import type { ItemCategory, Profile } from "./types";
+import type { ItemCategory, LetterProgress, LetterResponse, Profile } from "./types";
 
 export const LEVEL_XP = 100;
 export const xpForSuccess = 10;
@@ -9,6 +9,7 @@ export interface SessionReward {
   xp: number;
   eggProgress: number;
   decorItemId: string;
+  responses?: LetterResponse[];
 }
 
 export interface DecorReward {
@@ -31,6 +32,21 @@ export function pickDecorReward(random = Math.random): string {
   return decorRewards[index].itemId;
 }
 
+function updateLetterProgress(progress: LetterProgress, response: LetterResponse): LetterProgress {
+  const attempts = progress.attempts + 1;
+  const correct = progress.correct + (response.correct ? 1 : 0);
+  const totalResponseMs = progress.totalResponseMs + response.responseMs;
+  const accuracy = correct / attempts;
+  const averageResponseMs = totalResponseMs / attempts;
+
+  return {
+    attempts,
+    correct,
+    totalResponseMs,
+    mastered: attempts >= 5 && accuracy >= 0.85 && averageResponseMs <= 2200
+  };
+}
+
 export function applySessionReward(profile: Profile, reward: SessionReward): Profile {
   const totalXp = profile.xp + reward.xp;
   const levelUps = Math.floor(totalXp / LEVEL_XP);
@@ -40,6 +56,13 @@ export function applySessionReward(profile: Profile, reward: SessionReward): Pro
     .sort((a, b) => a.unlockOrder - b.unlockOrder)
     .slice(0, Math.min(keyboardLayouts[profile.selectedLayout].keys.length, level + 2))
     .map((key) => key.letter);
+  const letters = { ...selectedLayoutProgress.letters };
+
+  for (const response of reward.responses ?? []) {
+    const current = letters[response.letter] ?? { attempts: 0, correct: 0, totalResponseMs: 0, mastered: false };
+    letters[response.letter] = updateLetterProgress(current, response);
+  }
+
   const withProgress = {
     ...profile,
     level,
@@ -49,7 +72,8 @@ export function applySessionReward(profile: Profile, reward: SessionReward): Pro
       ...profile.layoutProgress,
       [profile.selectedLayout]: {
         ...selectedLayoutProgress,
-        unlockedLetters
+        unlockedLetters,
+        letters
       }
     }
   };
