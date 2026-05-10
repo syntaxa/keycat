@@ -1,8 +1,50 @@
-import { useEffect, useMemo, useState } from "react";
-import { keyboardLayouts } from "../domain/keyboardLayouts";
-import { createSession, handleInput } from "../domain/session";
-import type { LayoutId } from "../domain/types";
-import { getHintForStage } from "../domain/hints";
-import { RoomScene } from "./RoomScene";
+import { useEffect, useRef } from "react";
+import { handleDelay, handleKeyPress, isSessionComplete, type GameSession } from "../domain/session";
 import { MiniKeyboard } from "./MiniKeyboard";
-export function GameScreen({layout,onFinish}:{layout:LayoutId;onFinish:(correct:number)=>void}){const target=useMemo(()=>keyboardLayouts[layout].keys[0], [layout]);const [session,setSession]=useState(()=>createSession(target.letter));useEffect(()=>{setSession(createSession(target.letter));},[target.letter]);useEffect(()=>{const fn=(e:KeyboardEvent)=>{const next=handleInput(session,e.key.toLowerCase());setSession(next);if(next.finished) onFinish(next.correct);};window.addEventListener("keydown",fn);return()=>window.removeEventListener("keydown",fn);},[session,onFinish]);return <div><RoomScene target={session.target} mistake={session.mistakes>0}/><MiniKeyboard hint={getHintForStage(session.hintStage,target)}/></div>;}
+import { RoomScene } from "./RoomScene";
+
+export type { GameSession } from "../domain/session";
+
+interface GameScreenProps {
+  session: GameSession;
+  onSessionChange: (session: GameSession) => void;
+  onFinish: (session: GameSession) => void;
+}
+
+export function GameScreen({ session, onSessionChange, onFinish }: GameScreenProps) {
+  const shownAt = useRef(performance.now());
+
+  useEffect(() => {
+    shownAt.current = performance.now();
+    const delayTimer = window.setTimeout(() => {
+      onSessionChange(handleDelay(session));
+    }, session.delayMs);
+    return () => window.clearTimeout(delayTimer);
+  }, [session, session.currentKey.code, session.delayMs, onSessionChange]);
+
+  useEffect(() => {
+    function onKeyDown(event: KeyboardEvent) {
+      const responseMs = performance.now() - shownAt.current;
+      const next = handleKeyPress(session, event.code, responseMs);
+      if (isSessionComplete(next)) {
+        onFinish(next);
+      } else {
+        onSessionChange(next);
+      }
+    }
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [session, onSessionChange, onFinish]);
+
+  return (
+    <section className="game-screen">
+      <RoomScene currentKey={session.currentKey} catMood={session.catMood} />
+      <MiniKeyboard layout={session.layout} currentLetter={session.currentKey.letter} hintStage={session.hintStage} />
+      <div className="session-stats" aria-label="Статистика урока">
+        <span>Верно: {session.correctCount}/10</span>
+        <span>Ошибки: {session.mistakeCount}</span>
+      </div>
+    </section>
+  );
+}
