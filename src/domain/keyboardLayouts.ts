@@ -1,0 +1,3 @@
+import type { KeyboardLayout, KeyboardQuarter, KeyboardRow } from "./types";
+const key=(letter:string,display:string,code:string,row:KeyboardRow,quarter:KeyboardQuarter,unlockOrder:number)=>({letter,display,code,row,quarter,unlockOrder});
+export const keyboardLayouts: Record<"ru"|"en",KeyboardLayout>={ru:{id:"ru",label:"Русская",keys:[key("а","А","KeyF","home","centerLeft",1),key("о","О","KeyJ","home","centerRight",2),key("е","Е","KeyT","top","centerLeft",3)]},en:{id:"en",label:"English",keys:[key("a","A","KeyA","home","left",1),key("o","O","KeyO","top","right",2),key("e","E","KeyE","top","centerLeft",3)]}};
